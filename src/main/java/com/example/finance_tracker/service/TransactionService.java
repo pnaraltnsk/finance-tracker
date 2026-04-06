@@ -2,7 +2,6 @@ package com.example.finance_tracker.service;
 
 import com.example.finance_tracker.model.Transaction;
 import com.example.finance_tracker.repository.TransactionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

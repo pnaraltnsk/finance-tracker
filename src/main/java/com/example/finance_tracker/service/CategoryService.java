@@ -23,4 +23,16 @@ public class CategoryService {
     public Optional<Category> getCategoryById(Long id) {
         return categoryRepository.findById(id);
     }
+    public Category createCategory(Category category){
+        return categoryRepository.save(category);
+    }
+    public Category updateCategory(Long id, Category updatedCategory){
+        Category category = getCategoryById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
+        category.setName(updatedCategory.getName());
+        return categoryRepository.save(category);
+    }
+    public void deleteCategory(Long id){
+        categoryRepository.deleteById(id);
+    }
 }
