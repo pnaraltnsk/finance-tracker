@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import TransactionList from './components/TransactionList'
+import { createBrowserRouter, RouterProvider as Router, RouterProvider } from "react-router-dom";
+import TransactionList from './components/transactionList'
 import TransactionForm from './components/TransactionForm'
+import Home from './components/Home'
 import { getTransactions } from './api'
+
 
 function App() {
   const [transactions, setTransactions] = useState([]); 
@@ -16,15 +19,19 @@ function App() {
     }
   };
 
-  useEffect(() => {
+   useEffect(() => {
     fetchTransactions();
   }, []);
+
+  const router = createBrowserRouter([
+    {path: "/", element: <Home transactions={transactions} fetchTransactions={fetchTransactions} />},
+    {path: "/create", element: <TransactionForm fetchTransactions={fetchTransactions}/>},
+    //{path: "/summary", element: <Summary />},
+    //{path: "/create/:id", element: <TransactionUpdateForm />}
+  ]);
+
   return (
-    <div className="app">
-      <h1>Finance Tracker</h1>
-      <TransactionForm fetchTransactions={fetchTransactions} />
-      <TransactionList transactions={transactions} fetchTransactions={fetchTransactions} />
-    </div>
+    <RouterProvider router={router} />
   )
 }
 
