@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { createTransaction, getCategories } from "../api";
-import { useNavigate } from "react-router-dom";
+import { getTransactionById, updateTransaction, createTransaction, getCategories } from "../api";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -20,7 +20,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover,
   PopoverContent,
   PopoverTrigger } from "@/components/ui/popover"
-import { set } from "date-fns";
+
 
 
 const TransactionForm = ({ fetchTransactions }) => {
@@ -32,7 +32,7 @@ const TransactionForm = ({ fetchTransactions }) => {
   const [categories, setCategories] = useState([]);
   const [type, setType] = useState("income");
   const [category, setCategory] = useState("");
-
+  const { id } = useParams()
   const fetchCategories = async () => {
     try {
       const response = await getCategories();
@@ -44,19 +44,38 @@ const TransactionForm = ({ fetchTransactions }) => {
 
   useEffect(() => {
     fetchCategories();
+    if(id){
+      const fetchTransaction = async () => {
+        try {
+          const res = await getTransactionById(id);
+          const transaction = res.data;
+          setAmount(transaction.amount);
+          setDescription(transaction.description);
+          setType(transaction.type);
+          setCategory(String(transaction.category.id));
+          setDate(new Date (transaction.date));
+        } catch (error) {
+          console.error("Error fetching transaction:", error);
+        }
+      }
+      fetchTransaction(id);
+    }
+
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createTransaction({ amount, description, date, type, category: { id: category } });
-      fetchTransactions();
-      setAmount(0);
-      setDescription("");
-      setDate("");
-      setType("income");
-      setCategory("");
-      navigate("/")
+      if(id){
+        await updateTransaction(id, { amount, description, date, type, category: { id: Number(category) } });
+        fetchTransactions();
+        navigate("/")
+      }
+      else{
+        await createTransaction({ amount, description, date, type, category: { id: Number(category) } });
+        fetchTransactions();
+        navigate("/")
+      }
 
     } catch (error) {
       console.error("Error adding transaction:", error);
@@ -68,9 +87,9 @@ const TransactionForm = ({ fetchTransactions }) => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center ">
-    <h1 className="text-2xl font-bold mb-4">Add New Transaction</h1>
-    <form className="w-full max-w-md" onSubmit={handleSubmit}>
+    <div className=" flex flex-col min-h-screen items-center justify-center px-4">
+    <h1 className="text-2xl font-bold mb-6"> { id ? "Update Transaction" : "Add New Transaction"}</h1>
+    <form className="w-full max-w-lg p-6 rounded-lg border shadow-sm bg-card" onSubmit={handleSubmit}>
     <FieldGroup>
       <Field>
         <FieldLabel>Description:</FieldLabel>
@@ -82,10 +101,11 @@ const TransactionForm = ({ fetchTransactions }) => {
       </Field>
       <div className="grid grid-cols-2 gap-4">
         <Field>
-          <FieldLabel>Amount:</FieldLabel>
+          <FieldLabel>Amount: *</FieldLabel>
           <Input
             type="number"
             value={amount}
+            required
             onChange={(e) => setAmount(parseFloat(e.target.value))}
           />
         </Field>
@@ -94,11 +114,11 @@ const TransactionForm = ({ fetchTransactions }) => {
           <FieldLabel>Date:</FieldLabel>
            <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
-              <Button variant="outline">
+              <Button variant="outline" className= "w-full justify-center" >
                 {date ? date.toLocaleDateString() : "Pick a date"}
               </Button>
             </PopoverTrigger>
-            <PopoverContent>
+            <PopoverContent className="w-auto p-0">
               <Calendar
                 mode="single"
                 selected={date}
@@ -129,10 +149,12 @@ const TransactionForm = ({ fetchTransactions }) => {
       </Field>
       <Field>
         <FieldLabel>Category</FieldLabel>
-        <Select value={String(category)} onValueChange={handleCategoryChange}>
+        <Select value={category} onValueChange={handleCategoryChange}>
           <SelectTrigger>
             <SelectValue placeholder="Select a category">
-              {category ? categories.find(cat => cat.id === category)?.name : "Select a category"}
+              {category 
+                ? categories.find(cat => String(cat.id) === category)?.name 
+                : "Select a category"}
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
@@ -147,7 +169,7 @@ const TransactionForm = ({ fetchTransactions }) => {
       </div>
       <div className="grid grid-cols-2 gap-4" >
         <Button variant="outline" onClick={() => navigate("/")}>Cancel</Button>
-        <Button type="submit">Add Transaction</Button>
+        <Button type="submit">{id ? "Update Transaction" : "Add Transaction"}</Button>
       </div>
     </FieldGroup>
   </form>

@@ -10,6 +10,7 @@ export const updateCategory = (id, category) => api.put(`/categories/${id}`, cat
 export const deleteCategory = (id) => api.delete(`/categories/${id}`)
 
 export const getTransactions = () => api.get('/transactions')
+export const getTransactionById = (id) => api.get(`/transactions/${id}`)
 export const createTransaction = (transaction) => api.post('/transactions', transaction)
 export const updateTransaction = (id, transaction) => api.put(`/transactions/${id}`, transaction)
 export const deleteTransaction = (id) => api.delete(`/transactions/${id}`)

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {Link } from "react-router-dom";
 import { getTransactions, deleteTransaction, updateTransaction } from "../api";
 import { MoreHorizontalIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -21,9 +21,11 @@ import { DropdownMenu,
 const TransactionList = ({ transactions, fetchTransactions }) => {
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center ">
-      <h2>Transactions</h2>
-      <Table>
+    <div className="flex flex-col min-h-screen items-center justify-center px-4">
+      <h2 className="text-2xl font-bold mb-6">Transactions</h2>
+      <div className="rounded-lg border shadow-sm bg-card p-4 w-full max-w-4xl">
+      <div className="w-full overflow-x-auto">
+      <Table >
         <TableCaption>A list of your transactions.</TableCaption>
         <TableHeader>
           <TableRow>
@@ -39,7 +41,7 @@ const TransactionList = ({ transactions, fetchTransactions }) => {
           {transactions.map(transaction => (
             <TableRow key={transaction.id}>
               <TableCell className="font-medium">{transaction.description}</TableCell>
-              <TableCell>${transaction.amount.toFixed(2)}</TableCell>
+              <TableCell>€{transaction.amount.toFixed(2)}</TableCell>
               <TableCell>{transaction.date}</TableCell>
               <TableCell>{transaction.type}</TableCell>
               <TableCell>{transaction.category.name}</TableCell>
@@ -52,7 +54,9 @@ const TransactionList = ({ transactions, fetchTransactions }) => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                    <Link to={`/edit/${transaction.id}`}>
+                      <DropdownMenuItem>Edit</DropdownMenuItem>
+                    </Link>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => deleteTransaction(transaction.id).then(() => fetchTransactions())}>
                       Delete
@@ -66,10 +70,12 @@ const TransactionList = ({ transactions, fetchTransactions }) => {
         <TableFooter>
           <TableRow>
             <TableCell colSpan={5}>Total</TableCell>
-            <TableCell className="text-right">$2,500.00</TableCell>
+            <TableCell className="text-right">€{transactions.reduce((sum, transaction) => transaction.type === "income" ? sum - transaction.amount : sum + transaction.amount, 0).toFixed(2)}</TableCell>
           </TableRow>
         </TableFooter>
       </Table>
+      </div>
+      </div>
     </div>
   );
 

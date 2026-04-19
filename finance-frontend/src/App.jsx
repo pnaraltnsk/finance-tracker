@@ -5,6 +5,7 @@ import TransactionList from './components/transactionList'
 import TransactionForm from './components/TransactionForm'
 import Home from './components/Home'
 import { getTransactions } from './api'
+import { ThemeProvider } from './components/ThemeProvider';
 
 
 function App() {
@@ -27,11 +28,13 @@ function App() {
     {path: "/", element: <Home transactions={transactions} fetchTransactions={fetchTransactions} />},
     {path: "/create", element: <TransactionForm fetchTransactions={fetchTransactions}/>},
     //{path: "/summary", element: <Summary />},
-    //{path: "/create/:id", element: <TransactionUpdateForm />}
+    {path: "/edit/:id", element: <TransactionForm fetchTransactions={fetchTransactions} />}
   ]);
 
   return (
-    <RouterProvider router={router} />
+    <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+      <RouterProvider router={router} />
+    </ThemeProvider>
   )
 }
 
