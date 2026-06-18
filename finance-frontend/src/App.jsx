@@ -27,7 +27,6 @@ function App() {
   const router = createBrowserRouter([
     {path: "/", element: <Home transactions={transactions} fetchTransactions={fetchTransactions} />},
     {path: "/create", element: <TransactionForm fetchTransactions={fetchTransactions}/>},
-    //{path: "/summary", element: <Summary />},
     {path: "/edit/:id", element: <TransactionForm fetchTransactions={fetchTransactions} />}
   ]);
 

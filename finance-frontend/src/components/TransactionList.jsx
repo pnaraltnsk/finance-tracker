@@ -21,9 +21,9 @@ import { DropdownMenu,
 const TransactionList = ({ transactions, fetchTransactions }) => {
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center px-4">
-      <h2 className="text-2xl font-bold mb-6">Transactions</h2>
-      <div className="rounded-lg border shadow-sm bg-card p-4 w-full max-w-4xl">
+    <div className="w-full">
+      <div className="rounded-lg border shadow-sm bg-card p-4 w-full">
+        <h2 className="text-xl font-bold mb-4">Transactions</h2>
       <div className="w-full overflow-x-auto">
       <Table >
         <TableCaption>A list of your transactions.</TableCaption>
@@ -67,12 +67,6 @@ const TransactionList = ({ transactions, fetchTransactions }) => {
             </TableRow>
           ))}
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={5}>Total</TableCell>
-            <TableCell className="text-right">€{transactions.reduce((sum, transaction) => transaction.type === "income" ? sum - transaction.amount : sum + transaction.amount, 0).toFixed(2)}</TableCell>
-          </TableRow>
-        </TableFooter>
       </Table>
       </div>
       </div>
