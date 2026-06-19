@@ -1,0 +1,19 @@
+# Frontend
+node_modules/
+dist/
+
+# Backend
+target/
+*.class
+*.jar
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Environment
+.env
+
+# IDE
+.idea/
