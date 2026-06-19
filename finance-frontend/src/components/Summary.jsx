@@ -46,7 +46,7 @@ const Summary = ({showChartsOnly = false}) => {
           {/* Category Pie Chart */}
           <div className="rounded-lg border bg-card p-4 w-full">
             <h2 className="text-lg font-bold mb-4">Spending by Category</h2>
-            <ResponsiveContainer width="100%" height={200}>
+            <ResponsiveContainer width="100%" height={240}>
               <PieChart>
                 <Pie
                   data={byCategory}
@@ -54,7 +54,7 @@ const Summary = ({showChartsOnly = false}) => {
                   nameKey="category"
                   cx="50%"
                   cy="50%"
-                  outerRadius={80}
+                  outerRadius={60}
                   label
                 >
                   {byCategory.map((entry, index) => (
@@ -70,7 +70,7 @@ const Summary = ({showChartsOnly = false}) => {
           {/* Monthly Bar Chart */}
           <div className="rounded-lg border bg-card p-4 w-full">
             <h2 className="text-lg font-bold mb-4">Monthly Trends</h2>
-            <ResponsiveContainer width="100%" height={200}>
+            <ResponsiveContainer width="100%" height={205}>
               <BarChart data={monthly}>
                 <XAxis dataKey="month" />
                 <YAxis />

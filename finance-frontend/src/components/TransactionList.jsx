@@ -22,7 +22,7 @@ const TransactionList = ({ transactions, fetchTransactions }) => {
 
   return (
     <div className="w-full">
-      <div className="rounded-lg border shadow-sm bg-card p-4 w-full">
+      <div className="rounded-lg border shadow-sm bg-card p-4 w-full h-full">
         <h2 className="text-xl font-bold mb-4">Transactions</h2>
       <div className="w-full overflow-x-auto">
       <Table >
