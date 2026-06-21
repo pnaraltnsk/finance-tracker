@@ -1,19 +1,33 @@
-# Frontend
-node_modules/
-dist/
-
-# Backend
+#Java / Spring Boot
 target/
 *.class
 *.jar
+*.war
+.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
 
-# Python
+#React / Node
+node_modules/
+dist/
+build/
+finance-frontend/.vite/
+
+#Python
 venv/
 __pycache__/
 *.pyc
+*.pyo
 
-# Environment
+#Environment / secrets
 .env
+*.env.local
+application-local.properties
 
-# IDE
+#IDE
 .idea/
+.vscode/
+*.iml
+
+#OS
+.DS_Store
+Thumbs.db
